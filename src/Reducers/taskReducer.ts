@@ -3,7 +3,7 @@ import {TaskType} from "../Todolist";
 import {TasksStateType} from "../App";
 import {addTodolistAC} from "./todolistReducer";
 
-type TsarType =
+type ActionType =
     AddTaskType
     | RemoveTaskType
     | ChangeStatusTaskType
@@ -11,7 +11,7 @@ type TsarType =
     | RemoveTodolistType
     | AddTodolistType
 
-export const taskReducer = (state: TasksStateType, action: TsarType) => {
+export const taskReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
     switch (action.type) {
         case 'ADD_TASK' : {
             const todolistId = action.payload.todolistId;
@@ -31,19 +31,16 @@ export const taskReducer = (state: TasksStateType, action: TsarType) => {
             };
         }
         case "CHANGE_STATUS": {
-            const todolistId = action.payload.todolistId;
-            const taskId = action.payload.id;
-            const isDone = action.payload.isDone;
-            const updatedTasks = state[todolistId].map(t => {
-                if (t.id === taskId) {
-                    return {...t, isDone: isDone};
+            const updatedTasks = state[action.payload.todolistId].map(t => {
+                if (t.id === action.payload.id) {
+                    return {...t, isDone: action.payload.isDone};
                 } else {
                     return t;
                 }
             });
             return {
                 ...state,
-                [todolistId]: updatedTasks
+                [action.payload.todolistId]: updatedTasks
             };
         }
         case "CHANGE_TITLE": {

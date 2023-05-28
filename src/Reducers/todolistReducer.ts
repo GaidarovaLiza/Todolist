@@ -1,5 +1,4 @@
 import {FilterValuesType, TodolistType} from "../App";
-import {v1} from "uuid";
 
 type TsarType = AddTodolistType | RemoveTodolistType | ChangeTodolistTitleType | ChangeFilterType
 

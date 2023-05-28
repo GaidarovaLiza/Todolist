@@ -3,6 +3,7 @@ import {FilterValuesType} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, Checkbox, IconButton} from "@material-ui/core";
+import SuperCheckbox from "./components/SuperCheckbox";
 
 
 export type TaskType = {
@@ -64,8 +65,7 @@ export function Todolist(props: PropsType) {
 
 
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                        {/*<input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>*/}
-                        <Checkbox onChange={onChangeHandler} checked={t.isDone}/>
+                        <SuperCheckbox callback={onChangeHandler} checked={t.isDone}/>
 
                         <EditableSpan value={t.title} onChange={onTitleChangeHandler}/>
                         <button onClick={onClickHandler}>x</button>
