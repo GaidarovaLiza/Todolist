@@ -1,12 +1,15 @@
-import {FilterValuesType, TodolistType} from "../App";
+import {v1} from "uuid";
+import {FilterValuesType, TodolistType} from "../AppWithRedax";
 
 type TsarType = AddTodolistType | RemoveTodolistType | ChangeTodolistTitleType | ChangeFilterType
 
-export const todolistReducer = (state: TodolistType[], action: TsarType) => {
+const initialState: Array<TodolistType> = []
+
+export const todolistReducer = (state = initialState, action: TsarType) => {
     switch (action.type) {
         case 'ADD_TODOLIST': {
             const newTodolist: TodolistType = {
-                id: action.payload.id,
+                id: action.payload.ID,
                 title: action.payload.title,
                 filter: "all"
             };
@@ -39,12 +42,12 @@ export const todolistReducer = (state: TodolistType[], action: TsarType) => {
 
 type AddTodolistType = ReturnType<typeof addTodolistAC>
 
-export const addTodolistAC = (title: string, id: string) => {
+export const addTodolistAC = (title: string) => {
     return {
         type: "ADD_TODOLIST",
         payload: {
+            ID: v1(),
             title,
-            id,
         }
     } as const
 }

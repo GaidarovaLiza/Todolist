@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {TaskType} from "../Todolist";
-import {TasksStateType} from "../App";
+import {TasksStateType} from "../AppWithRedax";
 import {addTodolistAC} from "./todolistReducer";
 
 type ActionType =
@@ -11,7 +11,9 @@ type ActionType =
     | RemoveTodolistType
     | AddTodolistType
 
-export const taskReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
+const initialState: TasksStateType = {}
+
+export const taskReducer = (state = initialState, action: ActionType): TasksStateType => {
     switch (action.type) {
         case 'ADD_TASK' : {
             const todolistId = action.payload.todolistId;
@@ -60,11 +62,7 @@ export const taskReducer = (state: TasksStateType, action: ActionType): TasksSta
             }
         }
         case "ADD_TODOLIST": {
-            let newTodolistId = action.payload.id
-            return {
-                ...state,
-                [newTodolistId]: []
-            }
+            return {...state, [action.payload.ID]: []}
         }
         default:
             return state
