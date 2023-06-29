@@ -3,7 +3,6 @@ import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import ButtonAppBar from "./ButtonAppBar";
-import {v1} from "uuid";
 import {Container, Grid, Paper} from "@material-ui/core";
 import {
     addTaskAC,
@@ -11,9 +10,8 @@ import {
     changeTaskTitleAC,
     removeTaskAC,
     removeTodolistAC,
-    taskReducer
 } from "./Reducers/taskReducer";
-import {changeFilterAC, changeTodolistTitleAC, todolistReducer, addTodolistAC} from "./Reducers/todolistReducer";
+import {changeFilterAC, changeTodolistTitleAC, addTodolistAC} from "./Reducers/todolistReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./Reducers/state";
 
