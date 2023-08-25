@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import { TodolistsList } from '../features/TodolistsList/TodolistsList'
+import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 
 // You can learn about the difference by reading this guide on minimizing bundle size.
 // https://mui.com/guides/minimizing-bundle-size/
@@ -12,11 +12,13 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import { Menu } from '@mui/icons-material';
+import {Menu} from '@mui/icons-material';
 import LinearProgress from "@mui/material/LinearProgress";
 import {useAppSelector} from "./store";
 import {RequestStatusType} from "./appReducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {Navigate, Route, Routes} from "react-router-dom";
+import {Login} from "../features/Login/Login";
 
 
 function App() {
@@ -35,10 +37,16 @@ function App() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            {status === 'loading' && <LinearProgress color="secondary" />}
+            {status === 'loading' && <LinearProgress color="secondary"/>}
             <Container fixed>
-                <TodolistsList/>
+
             </Container>
+            <Routes>
+                <Route path={'/'} element={<TodolistsList/>}/>
+                <Route path={'login'} element={<Login/>}/>
+                <Route path={'404'} element={<h1 style={{textAlign: 'center'}}>404: PAGE NOT FOUND</h1>}/>
+                <Route path='*' element={<Navigate to={'404'}/>}/>
+            </Routes>
             <ErrorSnackbar/>
         </div>
     )
