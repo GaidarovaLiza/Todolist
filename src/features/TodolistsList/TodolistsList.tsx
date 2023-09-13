@@ -13,7 +13,6 @@ import {addTaskTC, removeTaskTC, TasksStateType, updateTaskTC} from './tasks-red
 import {TaskStatuses} from '../../api/todolists-api'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
-
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import {Navigate} from "react-router-dom";
@@ -26,6 +25,7 @@ export const TodolistsList: React.FC = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+        if (!isLoggedIn) return;
         const thunk = fetchTodolistsTC()
         dispatch(thunk)
     }, [])

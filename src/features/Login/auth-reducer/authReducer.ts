@@ -1,5 +1,11 @@
 import {Dispatch} from 'redux'
-import {SetErrorType, setStatusAC, SetStatusType} from "../../../app/appReducer";
+import {
+    SetErrorType,
+    setIsInitializedAC,
+    SetIsInitializedType,
+    setStatusAC,
+    SetStatusType
+} from "../../../app/appReducer";
 import {authAPI, Result_Code} from "../../../api/todolists-api";
 import {FormType} from "../Login";
 import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-utils";
@@ -23,6 +29,23 @@ export const setIsLoggedInAC = (value: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', value} as const)
 
 // thunks
+export const meTC = () => async (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setStatusAC('loading'))
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === Result_Code.OK) {
+            dispatch(setIsLoggedInAC(true))
+            dispatch(setStatusAC('succeeded'))
+        } else {
+            handleServerAppError(dispatch, res.data)
+        }
+    } catch (e) {
+        handleServerNetworkError(dispatch, (e as { message: string }))
+    } finally {
+        dispatch(setIsInitializedAC(true))
+    }
+}
+
 export const loginTC = (data: FormType) => async (dispatch: Dispatch<ActionsType>) => {
     dispatch(setStatusAC('loading'))
     try {
@@ -38,5 +61,20 @@ export const loginTC = (data: FormType) => async (dispatch: Dispatch<ActionsType
     }
 }
 
+export const logOutTC = () => async (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setStatusAC('loading'))
+    try {
+        const res = await authAPI.logOut()
+        if (res.data.resultCode === Result_Code.OK) {
+            dispatch(setIsLoggedInAC(false))
+            dispatch(setStatusAC('succeeded'))
+        } else {
+            handleServerAppError(dispatch, res.data)
+        }
+    } catch (e) {
+        handleServerNetworkError(dispatch, (e as { message: string }))
+    }
+}
+
 // types
-type ActionsType = ReturnType<typeof setIsLoggedInAC> | SetStatusType | SetErrorType
+type ActionsType = ReturnType<typeof setIsLoggedInAC> | SetStatusType | SetErrorType | SetIsInitializedType
