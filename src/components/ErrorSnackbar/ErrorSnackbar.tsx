@@ -1,34 +1,33 @@
-import React from 'react'
-import Snackbar from '@material-ui/core/Snackbar'
-import MuiAlert, {AlertProps} from '@material-ui/lab/Alert'
-import {useDispatch, useSelector} from 'react-redux'
-import {AppRootStateType} from '../../app/store'
-import {setAppErrorAC} from '../../app/app-reducer'
+import React from "react";
+import { useSelector } from "react-redux";
+import { AlertProps, Snackbar } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
+import { appActions } from "app/app.reducer";
+import { selectAppError } from "app/app.selectors";
+import { useAppDispatch } from "hooks/useAppDispatch";
 
-function Alert(props: AlertProps) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />
-}
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export function ErrorSnackbar() {
-    //const [open, setOpen] = React.useState(true)
-    const error = useSelector<AppRootStateType, string | null>(state => state.app.error);
-    const dispatch = useDispatch()
+  const error = useSelector(selectAppError);
+  const dispatch = useAppDispatch();
 
-    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-            return
-        }
-        dispatch(setAppErrorAC(null));
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
     }
+    dispatch(appActions.setAppError({ error: null }));
+  };
 
+  const isOpen = error !== null;
 
-    const isOpen = error !== null;
-
-    return (
-        <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="error">
-                {error}
-            </Alert>
-        </Snackbar>
-    )
+  return (
+    <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="error">
+        {error}
+      </Alert>
+    </Snackbar>
+  );
 }
