@@ -95,7 +95,6 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
 
           return (
             <Grid item key={tl.id}>
-              hello
               <Paper style={{ padding: "10px" }}>
                 <Todolist
                   todolist={tl}
